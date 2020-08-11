@@ -25,8 +25,8 @@ public class Function {
 	 * 2. curl "{your host}/api/HttpExample?name=HTTP%20Query"
 	 */
 
-	String connectionString = "DefaultEndpointsProtocol=https;AccountName=gaukstorage123;AccountKey=/aXJPKBtdJMRFKCGrU46tNlk8veX5TFbX45dMExTI2lG5dstkfIrBLbEaLdXLYPeiV4OJluQ39WQAj2dnSE2WQ==;EndpointSuffix=core.windows.net";
-	String sasToken = "https://gaukstorage123.file.core.windows.net/?sv=2019-12-12&ss=f&srt=sco&sp=rwdlc&se=2020-08-31T12:20:42Z&st=2020-08-10T04:20:42Z&spr=https,http&sig=zYhlqfAGuHiGpABM8wcgV57CyFvKqThqrMwNNq1SGkE%3D";
+	String connectionString = "DefaultEndpointsProtocol=https;AccountName=gaukstorage123;AccountKey=/xxx==;EndpointSuffix=core.windows.net";
+	String sasToken = "https://gaukstorage123.file.core.windows.net/?sv=2019-12-12&ss=f&srt=sco&sp=rwdlc&se=2020-08-31T12:20:42Z&st=2020-08-10T04:20:42Z&spr=https,http&sig=xxx%3D";
 	String endpoint = "https://gaukstorage123.file.core.windows.net/";
 
 
@@ -40,18 +40,24 @@ public class Function {
 			final ExecutionContext context) {
 		context.getLogger().info("Java HTTP trigger processed a request.");
 
+		context.getLogger().info("creating fileclient");
 		ShareFileClient fileClient = new ShareFileClientBuilder()
 				.connectionString(connectionString)
 				.endpoint(endpoint)
 				.shareName("testfs")
-				.resourcePath("myresource" + new Timestamp(System.currentTimeMillis()))
+				.resourcePath("myresource1234")
 				.buildFileClient();
+
+		context.getLogger().info("created client");
 
 		ShareFileInfo response = null;
 
-		if (!fileClient.exists()) {
-
+		context.getLogger().info("checking file client exists");
+		if (fileClient != null) {
+		//if (true) {
+			context.getLogger().info("yes, file client exists");
 			try {
+				context.getLogger().info("trying to create a file");
 				response = fileClient.create(1024);
 				System.out.println("Complete creating the file.");
 
